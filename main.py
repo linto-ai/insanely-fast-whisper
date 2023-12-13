@@ -4,8 +4,8 @@ from transformers import pipeline
 from pyannote.audio import Pipeline
 import argparse
 from rich.progress import Progress, TimeElapsedColumn, BarColumn, TextColumn
-from diarization_pipeline import diarize
-from result import build_result
+from src.insanely_fast_whisper.utils.diarization_pipeline import diarize
+from src.insanely_fast_whisper.utils.result import build_result
 import os.path
 
 
