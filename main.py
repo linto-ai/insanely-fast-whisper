@@ -1,6 +1,5 @@
 import torch
 import json
-from convert_json2rttm import json2rttm
 from transformers import pipeline
 from pyannote.audio import Pipeline
 import argparse
