@@ -59,11 +59,15 @@ def preprocess_inputs(inputs):
     return inputs, diarizer_inputs
 
 
-def diarize_audio(diarizer_inputs, diarization_pipeline):
+def diarize_audio(diarizer_inputs, diarization_pipeline,number_speaker, max_speaker):
     diarization = diarization_pipeline(
         {"waveform": diarizer_inputs, "sample_rate": 16000},
     )
-
+    if number_speaker!= None:
+            diarization = diarization_pipeline({"waveform": diarizer_inputs, "sample_rate": 16000}, num_speakers=number_speaker)
+    else:
+        diarization = diarization_pipeline({"waveform": diarizer_inputs, "sample_rate": 16000}, min_speakers=2, max_speakers=max_speaker)
+    
     segments = []
     for segment, track, label in diarization.itertracks(yield_label=True):
         segments.append(
@@ -114,6 +118,8 @@ def post_process_segments_and_transcripts(new_segments, transcript, group_by_spe
     # get the end timestamps for each chunk from the ASR output
     end_timestamps = np.array(
         [chunk["timestamp"][-1] if chunk["timestamp"][-1] is not None else sys.float_info.max for chunk in transcript])
+    if end_timestamps[-1] is None:
+        end_timestamps[-1] = new_segments[-1]["segment"]["end"]
     segmented_preds = []
 
     # align the diarizer timestamps and the ASR timestamps
