@@ -142,7 +142,7 @@ def main():
                 generate_kwargs={"task": args.task, "language": language},
                 return_timestamps=ts,
             )
-            with open(args.transcript_path, "w", encoding="utf8") as fp:
+            with open(whisper_transcription_name, "w", encoding="utf8") as fp:
                 
                 json.dump(outputs, fp, ensure_ascii=False)
 
